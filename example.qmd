@@ -1,0 +1,79 @@
+---
+title: "Penguins Analysis"
+author: "Jay Ashok Chauhan"
+format: 
+  html:
+    theme: lumen
+execute: 
+  warning: false
+  error: false
+---
+
+## Install and load required packages
+
+Firstly, we will install the `palmerpenguins` and `tidyverse` for our analysis using data manipulation, exploration and visualisation for penguins dataset. 
+**Copy and paste the below code in your R Console only once!**
+
+```{r}
+#| label: install-packages-commands
+#| eval: false
+
+install.packages("palmerpenguins")
+install.packages("tidyverse")
+```
+
+Then load the necessary packages-
+
+```{r}
+#| label: setup-project
+
+library(tidyverse)
+library(palmerpenguins)
+library(knitr)
+```
+
+## Introduction to the `palmerpenguins` dataset
+
+This dataset contains data of three different penguin species namely Adelie, Chinstrap and Gentoo penguins at the Palmer Station in the Antarctica, it measures key attributes of the penguins related to their mass, bill, flippers, sex, and their origination which can aid in understanding of how data relationships can be generated.
+
+Let's see how some data looks like:
+
+```{r}
+#| label: initial-look-at-data
+
+kable(head(penguins))
+```
+
+## Exploring population of different species at the islands
+
+Let's generate a quick plot to see the population of penguin species at the different islands at the Palmer station! 
+
+Before that we will create a subset of the data using some `tidyverse` functions!
+
+```{r}
+#| label: population-count-penguins-by-island
+
+# Count penguins for each species and island
+penguin_population_by_species_island <- penguins |>
+  count(species, island)
+```
+
+### Generate bar plot
+
+Let's see the data in a bar plot!
+
+```{r}
+#| label: fig-bar-plot-population-by-species-island
+#| fig-cap: "Population count of different penguin species on the islands at the Palmer Station"
+
+ggplot(penguin_population_by_species_island, aes(x = island, y = n, fill = species)) +
+  geom_col(alpha = 0.8) +
+  coord_flip() +
+  facet_wrap(~species, ncol = 1) +
+  scale_fill_viridis_d()  +
+  labs(
+    x = "Island",
+    y = "Population Count",
+    fill = "Penguin Species"
+  )
+```
