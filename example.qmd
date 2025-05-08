@@ -67,12 +67,15 @@ Let's see the data in a bar plot!
 #| fig-cap: "Population count of different penguin species on the islands at the Palmer Station"
 
 # Here we use ggplot to create a Column Plot!
-ggplot(penguin_population_by_species_island, aes(x = island, y = n, fill = species)) +
+ggplot(penguin_population_by_species_island, aes(reorder(island, n), y = n, fill = species)) +
   geom_col(alpha = 0.6) +
+  geom_text(aes(label = n), position = position_stack(vjust = 0.5), 
+            color = "black", size = 3, fontface = "bold") +
   coord_flip() +
   facet_wrap(~species, ncol = 1) +
   scale_fill_viridis_d(option = "magma")  +
   labs(
+    title = "Population of different Penguin Species by Islands",
     x = "Island",
     y = "Population Count",
     fill = "Penguin Species"
